@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property int $id
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Field extends Model
 {
+    use HasFactory;
+
     const TYPE_DATE = 'date';
     const TYPE_NUMBER = 'number';
     const TYPE_STRING = 'string';
@@ -22,9 +25,12 @@ class Field extends Model
     const TYPES = [
         self::TYPE_DATE,
         self::TYPE_NUMBER,
-        self::TYPE_NUMBER,
+        self::TYPE_STRING,
         self::TYPE_BOOLEAN,
     ];
 
-    use HasFactory;
+    public function subscribers(): BelongsToMany
+    {
+        return $this->belongsToMany(Subscriber::class, 'subscriber_fields');
+    }
 }

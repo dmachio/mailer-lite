@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -33,4 +34,12 @@ class Subscriber extends Model
     ];
 
     protected $guarded = ['id'];
+
+    public function fields(): BelongsToMany
+    {
+        return $this->belongsToMany(Field::class, 'subscriber_fields')
+            ->using(SubscriberField::class)
+            ->withTimestamps()
+            ->withPivot('value');
+    }
 }
