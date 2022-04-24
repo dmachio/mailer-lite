@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\ModelFilters\SubscriberFilter;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -18,6 +20,7 @@ use Illuminate\Support\Carbon;
 class Subscriber extends Model
 {
     use HasFactory;
+    use Filterable;
 
     const STATE_ACTIVE = 'active';
     const STATE_UNSUBSCRIBED = 'unsubscribed';
@@ -41,5 +44,10 @@ class Subscriber extends Model
             ->using(SubscriberField::class)
             ->withTimestamps()
             ->withPivot('value');
+    }
+
+    public function modelFilter()
+    {
+        return $this->provideFilter(SubscriberFilter::class);
     }
 }

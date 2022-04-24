@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\FieldTypes\FieldTypeDirector;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class SubscriberField extends Pivot
 {
+    protected $table = 'subscriber_fields';
+
     /**
      * Indicates if the IDs are auto-incrementing.
      *
@@ -36,18 +39,8 @@ class SubscriberField extends Pivot
      */
     public function getValueAttribute($value)
     {
-        switch ($this->field->type) {
-            case Field::TYPE_BOOLEAN:
-                return (bool) $value;
+        $field_type_director = new FieldTypeDirector($this->field->type);
 
-            case Field::TYPE_NUMBER:
-                return (float) $value;
-
-            case Field::TYPE_DATE:
-                return new Carbon($value);
-
-            default:
-                return $value;
-        }
+        return $field_type_director->getFormattedValue($value);
     }
 }

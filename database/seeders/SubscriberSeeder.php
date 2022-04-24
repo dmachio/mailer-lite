@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\FieldTypes\FieldTypeDirector;
 use App\Models\Field;
 use App\Models\Subscriber;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
-use Faker\Generator as Faker;
-use Illuminate\Container\Container;
 
 class SubscriberSeeder extends Seeder
 {
@@ -40,22 +39,10 @@ class SubscriberSeeder extends Seeder
         }
     }
 
-    private function getFakeValueForFieldType(string $field_type): string
+    private function getFakeValueForFieldType(string $field_type)
     {
-        $faker = Container::getInstance()->make(Faker::class);
+        $field_type_director = new FieldTypeDirector($field_type);
 
-        switch ($field_type) {
-            case Field::TYPE_BOOLEAN:
-                return $faker->randomElement([1, 0]);
-
-            case Field::TYPE_STRING:
-                return $faker->word();
-
-            case Field::TYPE_NUMBER:
-                return $faker->randomNumber();
-
-            case Field::TYPE_DATE:
-                return $faker->date('Y-m-d');
-        }
+        return $field_type_director->getFakeValue();
     }
 }

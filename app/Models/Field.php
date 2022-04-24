@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\ModelFilters\FieldFilter;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Field extends Model
 {
     use HasFactory;
+    use Filterable;
 
     const TYPE_DATE = 'date';
     const TYPE_NUMBER = 'number';
@@ -29,8 +32,15 @@ class Field extends Model
         self::TYPE_BOOLEAN,
     ];
 
+    protected $fillable = ['title', 'type'];
+
     public function subscribers(): BelongsToMany
     {
         return $this->belongsToMany(Subscriber::class, 'subscriber_fields');
+    }
+
+    public function modelFilter()
+    {
+        return $this->provideFilter(FieldFilter::class);
     }
 }
