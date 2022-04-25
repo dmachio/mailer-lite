@@ -1,0 +1,3 @@
+[submodule "mailer-lite-frontend"]
+	path = mailer-lite-frontend
+	url = git@github.com:dmachio/mailer-lite-frontend.git
