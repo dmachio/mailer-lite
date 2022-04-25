@@ -19,8 +19,8 @@ class FieldFilter extends ModelFilter
         return $this->whereType($type);
     }
 
-    public function title($title)
+    public function search($search)
     {
-        return $this->whereRaw("MATCH(title) AGAINST(? IN BOOLEAN MODE)", array("*$title*"));
+        return $this->whereRaw("MATCH(title) AGAINST(? IN BOOLEAN MODE)", array("*$search*"));
     }
 }

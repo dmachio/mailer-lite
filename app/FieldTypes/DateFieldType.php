@@ -15,7 +15,7 @@ class DateFieldType extends BaseFieldType implements FieldTypeInterface
 
     public function getFormattedValue($value)
     {
-        return new Carbon($value);
+        return (new Carbon($value))->format('Y-m-d');
     }
 
     public function getFakeValue()

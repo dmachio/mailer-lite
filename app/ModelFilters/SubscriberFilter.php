@@ -19,6 +19,11 @@ class SubscriberFilter extends ModelFilter
         return $this->whereState($state);
     }
 
+    public function search($search)
+    {
+        return $this->whereRaw("MATCH(name,email) AGAINST(? IN BOOLEAN MODE)", array("*$search*"));
+    }
+
     public function name($name)
     {
         return $this->whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", array("*$name*"));

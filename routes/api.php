@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AppConfigurationController;
 use App\Http\Controllers\Api\FieldController;
 use App\Http\Controllers\Api\SubscriberController;
 use Illuminate\Http\Request;
@@ -24,3 +25,5 @@ Route::resources([
     'subscribers' => SubscriberController::class,
     'fields' => FieldController::class,
 ]);
+
+Route::get('/app-configuration', AppConfigurationController::class);

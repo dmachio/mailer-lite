@@ -15,7 +15,7 @@ class FieldFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->text(),
+            'title' => ucfirst($this->faker->words(2, true)),
             'type' => $this->faker->randomElement(Field::TYPES),
         ];
     }

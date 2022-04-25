@@ -15,7 +15,17 @@ class SubscriberService
 
     public static function getPaginatedList(Request $request)
     {
-        return Subscriber::filter($request->all())->paginate();
+        $per_page = $request->get('per_page') ?? 15;
+
+        if ($per_page == -1) {
+            $per_page = Subscriber::filter($request->all())->count();
+        }
+
+        $sort_by = $request->get('sort_by') ?? 'created_at';
+        $sort_order = $request->get('sort_order') ?? 'desc';
+
+        return Subscriber::filter($request->all())->orderBy($sort_by, $sort_order)
+            ->paginate($per_page);
     }
 
     private static function fillableAttributes(): array
@@ -29,7 +39,7 @@ class SubscriberService
 
     private static function fieldValueEmpty($field_value)
     {
-        return empty($field_value) && $field_value !== "0" && $field_value !== 0;
+        return empty($field_value) && $field_value !== "0" && $field_value !== 0 && $field_value !== false;
     }
 
     private static function saveFieldsForNewSubscriber(Request $request, Subscriber $subscriber)

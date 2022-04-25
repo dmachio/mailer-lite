@@ -14,7 +14,18 @@ class FieldService
 
     public static function getPaginatedList(Request $request)
     {
-        return Field::filter($request->all())->paginate();
+        $per_page = $request->get('per_page') ?? 15;
+
+        if ($per_page == -1) {
+            $per_page = Field::filter($request->all())->count();
+        }
+
+        $sort_by = $request->get('sort_by') ?? 'created_at';
+        $sort_order = $request->get('sort_order') ?? 'desc';
+
+        return Field::filter($request->all())
+            ->orderBy($sort_by, $sort_order)
+            ->paginate($per_page);
     }
 
     private static function fillableAttributes(): array
